@@ -1,0 +1,30 @@
+
+
+.res {
+  display: flex;
+}
+
+td {
+    cursor: default;
+
+}
+
+tr:hover {
+    background: #b3e6ff;
+}
+
+#copybtn {
+    opacity: 0;
+}
+
+tr {
+	border-style: none;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table tr:hover #copybtn{
+    opacity: 1;
+}

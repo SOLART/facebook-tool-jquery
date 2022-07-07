@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Targo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- tablesorter widgets (optional) -->
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<script src="tablesorter/js/jquery.tablesorter.js"></script>
+	<script src="tablesorter/js/jquery.tablesorter.widgets.js"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link rel="stylesheet" href="tablesorter/css/theme.default.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+  </head>	
+
+  <body>		
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="custom-menu">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+						<i class="fa fa-bars"></i>
+						<span class="sr-only">Toggle Menu</span>
+					</button>
+				</div>
+				<div class="p-4">
+		  		<h1><a href="index.html" class="logo">Targo<span>Targeting Research</span></a></h1>
+	        <ul class="list-unstyled components mb-5">
+	          <li class="active">
+	            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+	          </li>
+	          <li>
+	              <a href="#"><span class="fa fa-user mr-3"></span> About</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-briefcase mr-3"></span> Works</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-sticky-note mr-3"></span> Blog</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-suitcase mr-3"></span> Gallery</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-cogs mr-3"></span> Services</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-paper-plane mr-3"></span> Contacts</a>
+	          </li>
+	        </ul>
+
+	        <div class="mb-5">
+						<h3 class="h6 mb-3">Subscribe for newsletter</h3>
+						<form action="#" class="subscribe-form">
+	            <div class="form-group d-flex">
+	            	<div class="icon"><span class="icon-paper-plane"></span></div>
+	              <input type="text" class="form-control" placeholder="Enter Email Address">
+	            </div>
+	          </form>
+					</div>
+	        <div class="footer">
+	        </div>
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+
+
+<div id="content" class="p-4 p-md-5 pt-5">
+
+	<div id=main>
+
+		<label id="label"></label>
+	    	<input type="text" id="inputvalue" placeholder="What are you looking for?"><input type="submit" id="btn">
+	</div>
+	<div>
+		<textarea id="copiedinterests" class="js-copytextarea" cols="70" rows="1" readonly></textarea>
+			<button class="js-textareacopybtn" >Copy</button>
+			<button class="js-textareaclearbtn">Clear</button>
+			
+
+
+
+
+
+
+	</div class = "res">
+	
+
+		<div id="interests"></div>	
+	</div>
+	
+	<script type="text/javascript">
+
+
+ 
+		
+
+
+		$(document).ready(function() {
+
+
+	
+
+
+
+			var copied = [];
+			console.log(copied)
+			$("#btn").click(function(){
+				$("#interests").empty();
+				$("#behaviors").empty();
+				$("#copiedbehav").val('');
+				// copied.length = 0;
+				var items = [];
+				var getVal = $("#inputvalue").val()
+				var fbapi = 'https://graph.facebook.com/search?type=adinterest&q=[' + getVal + ']&limit=10000&locale=en_US&access_token=429225527669552|40SYjap_0r28bRcWDHohf8O5J9A';
+
+				$.getJSON(fbapi, function(data) {						
+					
+					$("<table id='my-new-list' class='tablesorter'>").appendTo("#interests");
+					$("<thead><tr><th>Audience Name</th><th>Audience Size</th></tr></thead>").appendTo( "#my-new-list");
+
+					for (var i in data.data) {				
+						items.push( "<tr class='results' id='" + i + "'><td id='interestname'>" + data.data[i].name + "</td><td id='interestsize'>" +parseInt(data.data[i].audience_size).toLocaleString() + "</td><td><input id='copybtn' type='button' value='Copy'/></td><td id='google'><a href='https://www.google.com/search?q=" + data.data[i].name + "' target='_blank'> G </a></td><td id='facebook'><a href='https://www.facebook.com/search/pages?q=" + data.data[i].name + "' target='_blank'> F </a></td>");
+								};
+			
+					$( "<tbody>", {"id": "tbody", html: items.join("") }).appendTo( "#my-new-list");
+
+					
+					$("#interests #interestname").click(function(){
+					 	if (copied.length > 0 ) {
+					 		copied.push(", " +  $(this).text());
+					 	} else {
+							copied.push($(this).text());
+					 	}					 	
+					 $('#copiedinterests').val(copied.join(""));
+					});
+				
+					$('table #copybtn').click(function () {
+					 var name = $(this).closest("tr").find("td:first-child").text();
+					 var temp = $("<input>");
+					 $("body").append(temp);
+					 temp.val(name).select();
+					 document.execCommand("copy");			 
+					 temp.remove();			 
+					});
+
+					$(function() {
+						$("#my-new-list").tablesorter();
+					});
+				});	
+			});		
+
+			$("#inputvalue").keypress(function(e){
+				if(e.which == 13){ // Enter key pressed!
+					$("#btn").click();
+				}
+			});
+
+			$('.js-textareaclearbtn').click(function() {
+			  $('.js-copytextarea').val('');
+			  copied = [];
+			});
+				
+
+			$(".selectallbtn").click(function() {
+				const cells = document.querySelectorAll('#interestname');
+					cells.forEach(function(cell) {
+  					console.log(cell.innerHTML);
+				})
+			});
+
+			var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+
+			copyTextareaBtn.addEventListener('click', function(event) {
+				var copyTextarea = document.querySelector('.js-copytextarea');
+				copyTextarea.focus();
+				copyTextarea.select();
+
+				  try {
+				    var successful = document.execCommand('copy');
+				    var msg = successful ? 'successful' : 'unsuccessful';
+				    console.log('Copying text command was ' + msg);
+				  } catch (err) {
+				    console.log('Oops, unable to copy');
+				  }
+
+			});
+
+			$.fn.digits = function(){ 
+			    return this.each(function(){ 
+			        $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+			    })
+			}				
+		});	
+
+		
+						
+
+	</script>
+</div>
+<!-- <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+ -->    <script src="js/main.js"></script>
+    
+</body>
+</html>
